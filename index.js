@@ -39,7 +39,7 @@ const vertexShader = `
 `;
 
 const fragmentShader = `
-  precision mediump float;
+  precision highp float;
   uniform float u_time;
   uniform vec2 u_resolution;
 
@@ -65,7 +65,7 @@ const fragmentShader = `
 
   void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv *= 1.2;
+        uv *= 1.2;
     float t = u_time * 0.1;
 
     float r1 = noise(uv * 0.5 + t * 0.2);
@@ -108,7 +108,7 @@ const material = new THREE.ShaderMaterial({
   uniforms,
 });
 
-const geometry = new THREE.PlaneGeometry(2, 2);
+const geometry = new THREE.PlaneGeometry(2 * (window.innerWidth / window.innerHeight), 2);
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
