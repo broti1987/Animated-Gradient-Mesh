@@ -27,6 +27,8 @@ function resize() {
   renderer.setSize(w, h);
   uniforms.u_resolution.value.set(w, h);
   startTime = performance.now();
+
+  
 }
 window.addEventListener("resize", resize);
 resize();
@@ -108,9 +110,14 @@ const material = new THREE.ShaderMaterial({
   uniforms,
 });
 
-const geometry = new THREE.PlaneGeometry(2 * (window.innerWidth / window.innerHeight), 2);
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+let mesh = null;
+function createPlane() {
+  const geometry = new THREE.PlaneGeometry(2, 2);
+  if (mesh) scene.remove(mesh);
+  mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+}
+createPlane();
 
 // --- Animate ---
 function animate(time) {
