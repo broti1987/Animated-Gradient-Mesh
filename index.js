@@ -17,13 +17,16 @@ const uniforms = {
   u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
 };
 
+let startTime = performance.now();
+let lastSize = new THREE.Vector2(window.innerWidth, window.innerHeight);
+
 // --- Resize ---
 function resize() {
   const w = window.innerWidth;
   const h = window.innerHeight;
   renderer.setSize(w, h);
   uniforms.u_resolution.value.set(w, h);
-  uniforms.u_time.value = 0.0;
+  startTime = performance.now();
 }
 window.addEventListener("resize", resize);
 resize();
@@ -112,9 +115,18 @@ scene.add(mesh);
 // --- Animate ---
 function animate(time) {
   requestAnimationFrame(animate);
-  console.log("Animating", time);
-  uniforms.u_time.value = time * 0.02;
-  console.log("Time uniform:", uniforms.u_time.value);
+
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  if (w !== lastSize.x || h !== lastSize.y) {
+    lastSize.set(w, h);
+    renderer.setSize(w, h);
+    uniforms.u_resolution.value.set(w, h);
+    startTime = performance.now();
+  }
+
+  uniforms.u_time.value = (time - startTime) * 0.01;
   renderer.render(scene, camera);
 }
 animate();
