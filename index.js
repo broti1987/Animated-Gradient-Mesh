@@ -133,7 +133,7 @@ function animate(time) {
     startTime = performance.now();
   }
 
-  uniforms.u_time.value = (time - startTime) * 0.01;
+  uniforms.u_time.value = (time - startTime) * 0.025;
   renderer.render(scene, camera);
 }
 animate();
